@@ -27,9 +27,8 @@ public class SSLConnection extends AbstractConnection {
     }
 
     @Override protected void doConnect() throws IOException {
-        SocketChannel channel = SocketChannel.open();
-        channel.connect(new InetSocketAddress(server, port));
-        sock = sslContext.getSocketFactory().createSocket(channel.socket(), server, port, true);
+        Socket s = new Socket(server, port);
+        sock = sslContext.getSocketFactory().createSocket(s, server, port, true);
         out = sock.getOutputStream();
         in = sock.getInputStream();
     }
