@@ -20,7 +20,7 @@ import java.io.IOException;
 import com.ubergeek42.weechat.Buffer;
 import com.ubergeek42.weechat.relay.RelayConnection;
 import com.ubergeek42.weechat.relay.RelayConnectionHandler;
-import com.ubergeek42.weechat.relay.connection.SSLConnection;
+import com.ubergeek42.weechat.relay.connection.PlainConnection;
 import com.ubergeek42.weechat.relay.messagehandler.BufferManager;
 import com.ubergeek42.weechat.relay.messagehandler.BuffersChangedObserver;
 
@@ -38,11 +38,9 @@ public class RelayExample implements BuffersChangedObserver, RelayConnectionHand
 		
 		System.out.format("Attempting connection to %s:%s with password %s\n", server, port, password);
 
-        //PlainConnection conn = new PlainConnection(server, port);
-        SSLConnection conn = new SSLConnection(server, port);
+        PlainConnection conn = new PlainConnection(server, port);
 
 		relay = new RelayConnection(conn,password);
-		conn.addConnectionHandler(this);
 		relay.connect();
 	}
 
@@ -58,8 +56,7 @@ public class RelayExample implements BuffersChangedObserver, RelayConnectionHand
 
     @Override
     public void onAuthenticated() {
-        relay.addHandler("test", new TestMessageHandler());
-        relay.sendMsg("test","test","");
+        relay.sendMessage("test","test","");
 
 		/*
 		// Hook a handler for testing hdata functionality
